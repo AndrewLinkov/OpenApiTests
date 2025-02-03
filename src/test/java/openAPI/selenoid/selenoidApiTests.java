@@ -1,4 +1,4 @@
-package openApiSelenoid;
+package openAPI.selenoid;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public class selenoidApiTests {
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("total",is(20));
+                .body("total", is(20));
     }
 
     //Тест с логами .uri(), body()
@@ -32,7 +32,7 @@ public class selenoidApiTests {
                 .then()
                 .log().body()
                 .statusCode(200)
-                .body("total",is(20));
+                .body("total", is(20));
     }
 
     //Проверка что browsers.chrome = 100.0
@@ -45,7 +45,7 @@ public class selenoidApiTests {
                 .then()
                 .log().body()
                 .statusCode(200)
-                .body("browsers.chrome",hasKey("100.0"));
+                .body("browsers.chrome", hasKey("100.0"));
     }
 
     //Проверка total через assert
@@ -95,6 +95,6 @@ public class selenoidApiTests {
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("value.ready", is (true));
+                .body("value.ready", is(true));
     }
 }

@@ -7,6 +7,6 @@ public class Main {
         Car car2 = new Car();
         car2.setSpeed(240);
 
-        System.out.println(car2);
+        System.out.println("Result: " + car2);
     }
 }
