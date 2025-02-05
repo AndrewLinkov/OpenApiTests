@@ -1,4 +1,4 @@
-package openAPI.reqressIn;
+package openAPI.reqressIn.tests;
 
 import org.junit.jupiter.api.Test;
 
