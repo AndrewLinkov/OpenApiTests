@@ -1,13 +1,12 @@
-package openAPI.reqressIn.model;
+package openAPI.reqressIn.model.pojo;
 
-public class LoginBodyModel {
-    String email;
-    String password;
+public class LoginBodyPojoModel {
+    public String email;
+    public String password;
 
     public void setEmail(String email) {
         this.email = email;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }

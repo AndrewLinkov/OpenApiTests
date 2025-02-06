@@ -1,6 +1,6 @@
-package openAPI.reqressIn.model;
+package openAPI.reqressIn.model.pojo;
 
-public class LoginResponseModel {
+public class LoginResponsePojoModel {
 
     String token;
 
