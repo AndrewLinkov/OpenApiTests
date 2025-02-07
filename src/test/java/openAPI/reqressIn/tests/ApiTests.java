@@ -1,12 +1,13 @@
 package openAPI.reqressIn.tests;
 
+import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 
-public class ReqressinApiTests {
+public class ApiTests {
 
     private final String URL = "https://reqres.in/api";
     private final String login = "/login";
@@ -17,6 +18,7 @@ public class ReqressinApiTests {
     2. Полуить ответ: { "token": "QpwL5tke4Pnpja7X4" }
     3. Проверить токен
      */
+    @Description("Проверка положительного овтета")
     @Test
     void loginTest() {
         String data = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"cityslicka\" }";
@@ -33,7 +35,7 @@ public class ReqressinApiTests {
                 .body("token", is("QpwL5tke4Pnpja7X4"));
     }
 
-    //Проверка ошибки 415
+    @Description("Получение ошибки с кодом 415")
     @Test
     void negativLoginTest() {
         given()
@@ -45,7 +47,7 @@ public class ReqressinApiTests {
                 .statusCode(415);
     }
 
-    //Проверка авторизации без логина и пароля
+    @Description("Проверка авторизации без логина и пароля")
     @Test
     void loginErrorTest() {
         String data = "{ \"email\": \"eve.holt@reqres.in\"}";
