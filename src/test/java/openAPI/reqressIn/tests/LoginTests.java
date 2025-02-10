@@ -3,8 +3,6 @@ package openAPI.reqressIn.tests;
 import jdk.jfr.Description;
 import openAPI.reqressIn.model.lombok.LoginBodyLombokModel;
 import openAPI.reqressIn.model.lombok.LoginResponseLombokModel;
-import openAPI.reqressIn.model.pojo.LoginBodyPojoModel;
-import openAPI.reqressIn.model.pojo.LoginResponsePojoModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;

@@ -12,6 +12,7 @@ import static io.restassured.http.ContentType.JSON;
 public class CreateSpec {
     public static RequestSpecification requestCreateSpec = with()
             .log().uri()
+            .log().headers()
             .log().body()
             .contentType(JSON)
             .baseUri("https://reqres.in")

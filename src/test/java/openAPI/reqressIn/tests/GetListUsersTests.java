@@ -21,10 +21,11 @@ public class GetListUsersTests {
                 .spec(responseListUsersSpec)
                 .extract().as(ListUsersModel.class);
 
+
         //ѕрописать проверку остальных полей массива
         assertThat(listUsers.getPage()).isEqualTo("2");
-        assertThat(listUsers.getPer_page()).isEqualTo("6");
+        assertThat(listUsers.getPerPage()).isEqualTo("6");
         assertThat(listUsers.getTotal()).isEqualTo("12");
-        assertThat(listUsers.getTotal_pages()).isEqualTo("2");
+        assertThat(listUsers.getTotalPages()).isEqualTo("2");
     }
 }
