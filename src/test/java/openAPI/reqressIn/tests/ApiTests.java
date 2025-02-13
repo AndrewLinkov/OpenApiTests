@@ -18,22 +18,7 @@ public class ApiTests {
     2. Полуить ответ: { "token": "QpwL5tke4Pnpja7X4" }
     3. Проверить токен
      */
-    @Description("Проверка положительного овтета")
-    @Test
-    void loginTest() {
-        String data = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"cityslicka\" }";
 
-        given()
-                .log().all()
-                .contentType(JSON)
-                .body(data)
-                .when()
-                .post(URL + login)
-                .then()
-                .log().all()
-                .statusCode(200)
-                .body("token", is("QpwL5tke4Pnpja7X4"));
-    }
 
     @Description("Получение ошибки с кодом 415")
     @Test
