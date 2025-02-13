@@ -1,8 +1,8 @@
 package openAPI.reqressIn.tests;
 
 import jdk.jfr.Description;
-import openAPI.reqressIn.model.lombok.LoginBodyLombokModel;
-import openAPI.reqressIn.model.lombok.LoginResponseLombokModel;
+import openAPI.reqressIn.model.lombok.LoginRequestModel;
+import openAPI.reqressIn.model.lombok.LoginResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -12,15 +12,13 @@ import static openAPI.reqressIn.specs.LoginSpec.loginResponseSpec;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginTests {
-
-    @Description("Тестовый метод с lombok")
     @Test
     void loginWithLombokModelTest() {
-        LoginBodyLombokModel loginBody = new LoginBodyLombokModel();
+        LoginRequestModel loginBody = new LoginRequestModel();
         loginBody.setEmail("eve.holt@reqres.in");
         loginBody.setPassword("cityslicka");
 
-        LoginResponseLombokModel response = given()
+        LoginResponseModel response = given()
                 .log().uri()
                 .log().body()
                 .contentType(JSON)
@@ -31,7 +29,7 @@ public class LoginTests {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .extract().as(LoginResponseLombokModel.class);
+                .extract().as(LoginResponseModel.class);
 
         assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
     }
@@ -39,17 +37,17 @@ public class LoginTests {
     @Description("Тестовый метод со спецификацией")
     @Test
     void loginWithSpecsTest() {
-        LoginBodyLombokModel loginBody = new LoginBodyLombokModel();
+        LoginRequestModel loginBody = new LoginRequestModel();
         loginBody.setEmail("eve.holt@reqres.in");
         loginBody.setPassword("cityslicka");
 
-        LoginResponseLombokModel response = given(loginRequestSpec)
+        LoginResponseModel response = given(loginRequestSpec)
                 .body(loginBody)
                 .when()
                 .post("/login")
                 .then()
                 .spec(loginResponseSpec)
-                .extract().as(LoginResponseLombokModel.class);
+                .extract().as(LoginResponseModel.class);
 
         assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
     }
