@@ -1,4 +1,4 @@
-package openAPI.reqressIn.model.create;
+package openAPI.reqressIn.model;
 
 import lombok.Data;
 

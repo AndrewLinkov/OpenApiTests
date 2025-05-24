@@ -5,5 +5,6 @@ public class Endpoints {
 
             LIST_USERS = "/users?page=2",
             SINGLE_USER = "/users/2",
-            USERS = "/users";
+            USERS = "/users",
+            LOGIN = "/login";
 }

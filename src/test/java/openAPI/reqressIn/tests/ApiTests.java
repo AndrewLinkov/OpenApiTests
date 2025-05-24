@@ -15,11 +15,9 @@ public class ApiTests {
     /*
     1. Выполнить запрос POST https://reqres.in/api/login
         с телом запроса: { "email": "eve.holt@reqres.in", "password": "cityslicka" }
-    2. Полуить ответ: { "token": "QpwL5tke4Pnpja7X4" }
+    2. Получить ответ: { "token": "QpwL5tke4Pnpja7X4" }
     3. Проверить токен
      */
-
-
     @Description("Получение ошибки с кодом 415")
     @Test
     void negativLoginTest() {
