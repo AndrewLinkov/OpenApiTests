@@ -2,14 +2,14 @@
 
 1. https://reqres.in/
 
-- Дописать проверку полей JSON ответы в классе GetListUsersTests
-- Дописать проверку полей JSON ответы в классе PostCreateTests
-- Реализовать класс GetSingleUsers
+В классе ReqressInTests описаны тестовые сценарии
+отправки запросов к сервису https://reqres.in/ и получению ответов.
+
+Описать запрос PUT, DELETED
+Доработать Allure
 
 2. https://selenoid.autotests.cloud/
 
-
-
-Доработки:
-Реализовать проверку полей
-Allure
+В классе selenoidApiTests описаны тестовые сценарии
+отправки запросов к сервису https://selenoid.autotests.cloud/status 
+и получению ответов.

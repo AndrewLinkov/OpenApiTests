@@ -1,6 +1,5 @@
 package openAPI.reqressIn.tests;
 
-import jdk.jfr.Description;
 import openAPI.reqressIn.model.CreateRequestModel;
 import openAPI.reqressIn.model.CreateResponseModel;
 import openAPI.reqressIn.model.ListUsersModel;
@@ -8,6 +7,7 @@ import openAPI.reqressIn.model.LoginRequestModel;
 import openAPI.reqressIn.model.LoginResponseModel;
 import openAPI.reqressIn.model.UserData;
 import openAPI.reqressIn.specs.Specifications;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -19,8 +19,9 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class ReqressInTests {
-    @Description("Запрос GET LIST USERS.")
+
     @Test
+    @DisplayName("Запрос GET LIST USERS.")
     void getListUsersTest() {
         // Педусловие
         ListUsersModel listUsers = given(requestSpec)
@@ -41,8 +42,8 @@ public class ReqressInTests {
                 () -> assertThat(listUsers.getTotalPages()).isEqualTo(2));
     }
 
-    @Description("Запрос GET SINGLE USERS.")
     @Test
+    @DisplayName("Запрос GET SINGLE USERS.")
     void singleUsers() {
         // Предусловие
         UserData data = Specifications.requestSpec
@@ -64,8 +65,8 @@ public class ReqressInTests {
         );
     }
 
-    @Description("Запрос POST CREATE")
     @Test
+    @DisplayName("Запрос POST CREATE")
     void postCreateTest() {
         // Предусловие
         CreateRequestModel bodyData = new CreateRequestModel();
@@ -89,18 +90,20 @@ public class ReqressInTests {
         assertThat(response.getCreatedAt()).isEqualTo("2025-02-13T11:35:50.682Z");
     }
 
-    @Description("Запрос POST LOGIN OK. Авторизация")
     @Test
+    @DisplayName("Запрос POST LOGIN OK. Авторизация")
     void loginWithSpecsTest() {
-
+        // Предусловие
         LoginRequestModel loginBody = new LoginRequestModel();
         loginBody.setEmail("eve.holt@reqres.in");
         loginBody.setPassword("cityslicka");
 
         LoginResponseModel response = given(requestSpec)
                 .body(loginBody)
+                // Действие
                 .when()
                 .post(LOGIN)
+                // Проверка
                 .then()
                 .spec(responseStatus200)
                 .spec(responseBodySpec)
@@ -109,8 +112,8 @@ public class ReqressInTests {
         assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
     }
 
-    @Description("Проверка авторизации без логина и пароля")
     @Test
+    @DisplayName("Проверка авторизации без логина и пароля (Запрос POST)")
     void loginErrorTest() {
         // Предусловие
         String data = "{ \"email\": \"eve.holt@reqres.in\"}";

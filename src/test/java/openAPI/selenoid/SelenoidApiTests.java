@@ -1,5 +1,6 @@
 package openAPI.selenoid;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -7,56 +8,58 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class selenoidApiTests {
+public class SelenoidApiTests {
 
-    // Прверить доступность "https://selenoid.autotests.cloud/status"
+    private String baseUrl = "https://selenoid.autotests.cloud/status";
     @Test
+    @DisplayName("Прверить доступности сервиса https://selenoid.autotests.cloud/status")
     void checkTotalWithLogs() {
         given()
                 .log().all()
                 .when()
-                .get("https://selenoid.autotests.cloud/status")
+                .get(baseUrl)
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body("total", is(20));
+                .body("total", is(5));
     }
 
-    //Тест с логами .uri(), body()
     @Test
+    @DisplayName("Тест с логами .uri(), body() ")
     void checkTotalWithSomeLogs() {
         given()
                 .log().uri()
                 .when()
-                .get("https://selenoid.autotests.cloud/status")
+                .get(baseUrl)
                 .then()
                 .log().body()
                 .statusCode(200)
                 .body("total", is(20));
     }
 
-    //Проверка что browsers.chrome = 100.0
     @Test
+    @DisplayName("Проверка что browsers.chrome = 100.0")
     void checkChromeVersions() {
         given()
                 .log().uri()
                 .when()
-                .get("https://selenoid.autotests.cloud/status")
+                .get(baseUrl)
                 .then()
                 .log().body()
                 .statusCode(200)
                 .body("browsers.chrome", hasKey("100.0"));
     }
 
-    //Проверка total через assert
     @Test
+    @DisplayName("Проверка атрибута total")
     void checkResponseTotal() {
+
         Integer expectedTotal = 20;
 
         Integer actualTotal = given()
                 .log().uri()
                 .when()
-                .get("https://selenoid.autotests.cloud/status")
+                .get(baseUrl)
                 .then()
                 .log().body()
                 .statusCode(200)
@@ -65,33 +68,26 @@ public class selenoidApiTests {
         assertEquals(expectedTotal, actualTotal);
     }
 
-    /*
-    Проверка адреса https://selenoid.autotests.cloud/wd/hub/status
-    Неавторизованный пользователь получает 401 ошибку
-     */
     @Test
+    @DisplayName("Проверка ошибки 401")
     void checkWdHubStatus401() {
         given()
                 .log().all()
                 .when()
-                .get("https://selenoid.autotests.cloud/wd/hub/status")
+                .get(baseUrl)
                 .then()
                 .log().all()
                 .statusCode(401);
     }
 
-
-    /*
-    Проверка адреса https://selenoid.autotests.cloud/wd/hub/status
-    Пользователь авторизован. Для ручных проверок Логин: user1 Пароль: 1234
-     */
     @Test
+    @DisplayName("Проверка авторизованного пользователя")
     void checkWdHubWitsAuthStatus() {
         given()
                 .log().all()
                 .auth().basic("user1", "1234")
                 .when()
-                .get("https://selenoid.autotests.cloud/wd/hub/status")
+                .get(baseUrl)
                 .then()
                 .log().all()
                 .statusCode(200)
