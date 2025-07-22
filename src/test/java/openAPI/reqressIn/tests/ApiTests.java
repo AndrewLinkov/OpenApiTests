@@ -33,6 +33,7 @@ public class ApiTests {
     @Description("ѕроверка авторизации без логина и парол€")
     @Test
     void loginErrorTest() {
+
         String data = "{ \"email\": \"eve.holt@reqres.in\"}";
 
         given()
