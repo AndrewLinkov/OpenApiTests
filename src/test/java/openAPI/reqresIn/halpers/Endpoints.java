@@ -1,4 +1,4 @@
-package openAPI.reqressIn.halpers;
+package openAPI.reqresIn.halpers;
 
 public class Endpoints {
     public static final String
@@ -7,4 +7,5 @@ public class Endpoints {
             SINGLE_USER = "/users/2",
             USERS = "/users",
             LOGIN = "/login";
+
 }

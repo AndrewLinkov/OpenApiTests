@@ -1,4 +1,4 @@
-package openAPI.reqressIn.model;
+package openAPI.reqresIn.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

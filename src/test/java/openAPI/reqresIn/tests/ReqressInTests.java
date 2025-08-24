@@ -1,19 +1,14 @@
-package openAPI.reqressIn.tests;
+package openAPI.reqresIn.tests;
 
-import openAPI.reqressIn.model.CreateRequestModel;
-import openAPI.reqressIn.model.CreateResponseModel;
-import openAPI.reqressIn.model.ListUsersModel;
-import openAPI.reqressIn.model.LoginRequestModel;
-import openAPI.reqressIn.model.LoginResponseModel;
-import openAPI.reqressIn.model.UserData;
-import openAPI.reqressIn.specs.Specifications;
+import openAPI.reqresIn.model.*;
+import openAPI.reqresIn.specs.Specifications;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static openAPI.reqressIn.halpers.Endpoints.*;
-import static openAPI.reqressIn.specs.Specifications.*;
+import static openAPI.reqresIn.halpers.Endpoints.*;
+import static openAPI.reqresIn.specs.Specifications.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -21,18 +16,18 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class ReqressInTests {
 
     @Test
-    @DisplayName("Запрос GET LIST USERS.")
+    @DisplayName("Р—Р°РїСЂРѕСЃ GET LIST USERS.")
     void getListUsersTest() {
-        // Педусловие
+        // РџРµРґСѓСЃР»РѕРІРёРµ
         ListUsersModel listUsers = given(requestSpec)
-                // Действие
+                // Р”РµР№СЃС‚РІРёРµ
                 .when()
                 .get(LIST_USERS)
-                // Проверка
+                // РџСЂРѕРІРµСЂРєР°
                 .then()
                 .spec(responseStatus200)
                 .spec(responseBodySpec)
-                // извлечь в pojo класс ListUsersModel
+                // РёР·РІР»РµС‡СЊ РІ pojo РєР»Р°СЃСЃ ListUsersModel
                 .extract().as(ListUsersModel.class);
 
         assertAll(
@@ -43,21 +38,21 @@ public class ReqressInTests {
     }
 
     @Test
-    @DisplayName("Запрос GET SINGLE USERS.")
+    @DisplayName("Р—Р°РїСЂРѕСЃ GET SINGLE USERS.")
     void singleUsers() {
-        // Предусловие
+        // РџСЂРµРґСѓСЃР»РѕРІРёРµ
         UserData data = Specifications.requestSpec
-                // Действие
+                // Р”РµР№СЃС‚РІРёРµ
                 .when()
                 .get(SINGLE_USER)
-                // Проверка
+                // РџСЂРѕРІРµСЂРєР°
                 .then()
                 .spec(responseStatus200)
                 .spec(responseBodySpec)
                 .extract().as(UserData.class);
 
-        // групповвая проверка полей ответа
-        assertAll("Проверка полученных полей пользователя",
+        // РіСЂСѓРїРїРѕРІРІР°СЏ РїСЂРѕРІРµСЂРєР° РїРѕР»РµР№ РѕС‚РІРµС‚Р°
+        assertAll("РџСЂРѕРІРµСЂРєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РїРѕР»РµР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ",
                 () -> assertThat(data.getUser().getId()).isEqualTo(2),
                 () -> assertThat(data.getUser().getEmail()).isEqualTo("janet.weaver@reqres.in"),
                 () -> assertThat(data.getUser().getFirstName()).isEqualTo("Janet"),
@@ -66,19 +61,19 @@ public class ReqressInTests {
     }
 
     @Test
-    @DisplayName("Запрос POST CREATE")
+    @DisplayName("Р—Р°РїСЂРѕСЃ POST CREATE")
     void postCreateTest() {
-        // Предусловие
+        // РџСЂРµРґСѓСЃР»РѕРІРёРµ
         CreateRequestModel bodyData = new CreateRequestModel();
         bodyData.setJob("leader");
         bodyData.setName("morpheus");
 
         CreateResponseModel response = given(requestSpec)
                 .body(bodyData)
-                // Действие
+                // Р”РµР№СЃС‚РІРёРµ
                 .when()
                 .post(USERS)
-                // Проверка
+                // РџСЂРѕРІРµСЂРєР°
                 .then()
                 .spec(responseStatus201)
                 .spec(responseBodySpec)
@@ -91,19 +86,19 @@ public class ReqressInTests {
     }
 
     @Test
-    @DisplayName("Запрос POST LOGIN OK. Авторизация")
+    @DisplayName("Р—Р°РїСЂРѕСЃ POST LOGIN OK. РђРІС‚РѕСЂРёР·Р°С†РёСЏ")
     void loginWithSpecsTest() {
-        // Предусловие
+        // РџСЂРµРґСѓСЃР»РѕРІРёРµ
         LoginRequestModel loginBody = new LoginRequestModel();
         loginBody.setEmail("eve.holt@reqres.in");
         loginBody.setPassword("cityslicka");
 
         LoginResponseModel response = given(requestSpec)
                 .body(loginBody)
-                // Действие
+                // Р”РµР№СЃС‚РІРёРµ
                 .when()
                 .post(LOGIN)
-                // Проверка
+                // РџСЂРѕРІРµСЂРєР°
                 .then()
                 .spec(responseStatus200)
                 .spec(responseBodySpec)
@@ -113,22 +108,45 @@ public class ReqressInTests {
     }
 
     @Test
-    @DisplayName("Проверка авторизации без логина и пароля (Запрос POST)")
+    @DisplayName("РџСЂРѕРІРµСЂРєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё Р±РµР· Р»РѕРіРёРЅР° Рё РїР°СЂРѕР»СЏ (Р—Р°РїСЂРѕСЃ POST)")
     void loginErrorTest() {
-        // Предусловие
+        // РџСЂРµРґСѓСЃР»РѕРІРёРµ
         String data = "{ \"email\": \"eve.holt@reqres.in\"}";
 
         given()
                 .log().all()
                 .contentType(JSON)
                 .body(data)
-                // Действие
+                // Р”РµР№СЃС‚РІРёРµ
                 .when()
                 .post("https://reqres.in/api")
-                // Проверка
+                // РџСЂРѕРІРµСЂРєР°
                 .then()
                 .log().body()
                 .statusCode(400)
                 .body("error", is("Missing password"));
+    }
+
+    @Test
+    @DisplayName("Р—Р°РїСЂРѕСЃ PUT")
+    void updateTest() {
+
+        // РџСЂРµРґСѓСЃР»РѕРІРёРµ
+        CreateRequestModel bodyUpdateData = new CreateRequestModel();
+        bodyUpdateData.setJob("zion resident");
+        bodyUpdateData.setName("morpheus");
+
+        UpdateResponseModel response = given(requestSpec)
+                .body(bodyUpdateData)
+                // Р”РµР№СЃС‚РІРёРµ
+                .when()
+                .put("https://reqres.in/api/api/users/2")
+                // РџСЂРѕРІРµСЂРєР°
+                .then()
+                .extract().as(UpdateResponseModel.class);
+
+        assertThat(response.getName()).isEqualTo("morpheus");
+        assertThat(response.getJob()).isEqualTo("zion resident");
+        //assertThat(response.updatedAt()).isEqualTo("2025-07-22T17:14:21.044");
     }
 }

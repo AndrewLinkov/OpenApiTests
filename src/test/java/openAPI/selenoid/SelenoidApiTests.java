@@ -11,8 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SelenoidApiTests {
 
     private String baseUrl = "https://selenoid.autotests.cloud/status";
+
     @Test
-    @DisplayName("Прверить доступности сервиса https://selenoid.autotests.cloud/status")
+    @DisplayName("РџСЂРІРµСЂРёС‚СЊ РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё СЃРµСЂРІРёСЃР° https://selenoid.autotests.cloud/status")
     void checkTotalWithLogs() {
         given()
                 .log().all()
@@ -25,7 +26,7 @@ public class SelenoidApiTests {
     }
 
     @Test
-    @DisplayName("Тест с логами .uri(), body() ")
+    @DisplayName("РўРµСЃС‚ СЃ Р»РѕРіР°РјРё .uri(), body() ")
     void checkTotalWithSomeLogs() {
         given()
                 .log().uri()
@@ -38,7 +39,7 @@ public class SelenoidApiTests {
     }
 
     @Test
-    @DisplayName("Проверка что browsers.chrome = 100.0")
+    @DisplayName("РџСЂРѕРІРµСЂРєР° С‡С‚Рѕ browsers.chrome = 100.0")
     void checkChromeVersions() {
         given()
                 .log().uri()
@@ -51,7 +52,7 @@ public class SelenoidApiTests {
     }
 
     @Test
-    @DisplayName("Проверка атрибута total")
+    @DisplayName("РџСЂРѕРІРµСЂРєР° Р°С‚СЂРёР±СѓС‚Р° total")
     void checkResponseTotal() {
 
         Integer expectedTotal = 20;
@@ -69,7 +70,7 @@ public class SelenoidApiTests {
     }
 
     @Test
-    @DisplayName("Проверка ошибки 401")
+    @DisplayName("РџСЂРѕРІРµСЂРєР° РѕС€РёР±РєРё 401")
     void checkWdHubStatus401() {
         given()
                 .log().all()
@@ -81,7 +82,7 @@ public class SelenoidApiTests {
     }
 
     @Test
-    @DisplayName("Проверка авторизованного пользователя")
+    @DisplayName("РџСЂРѕРІРµСЂРєР° Р°РІС‚РѕСЂРёР·РѕРІР°РЅРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")
     void checkWdHubWitsAuthStatus() {
         given()
                 .log().all()

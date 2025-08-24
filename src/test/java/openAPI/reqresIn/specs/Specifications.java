@@ -1,4 +1,4 @@
-package openAPI.reqressIn.specs;
+package openAPI.reqresIn.specs;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -26,7 +26,7 @@ public class Specifications {
             .build();
 
     public static RequestSpecification requestSpec = with()
-            .baseUri("https://reqres.in/api")
+            .baseUri("https://reqres.in/api/")
             .log().uri()
             .log().headers()
             .log().body()
