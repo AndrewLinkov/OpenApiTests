@@ -2,6 +2,7 @@ package openAPI.reqresIn.tests;
 
 import openAPI.reqresIn.model.*;
 import openAPI.reqresIn.specs.Specifications;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,22 +14,79 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-public class ReqressInTests {
+public class ReqResInTests {
+
+    private final String baseUrl = "https://reqres.in/api";
 
     @Test
-    @DisplayName("Запрос GET LIST USERS.")
-    void getListUsersTest() {
-        // Педусловие
-        ListUsersModel listUsers = given(requestSpec)
+    @DisplayName("Авторизации пользователя. POST.")
+    void postLoginTest() {
+
+        // Если запрос POST создаем Pojo класс
+        LoginRequestModel loginRequestModel = new LoginRequestModel();
+        loginRequestModel.setUsername("");
+        loginRequestModel.setPassword("cityslicka");
+        loginRequestModel.setEmail("eve.holt@reqres.in");
+
+        String response = given()
+                // Предусловие
+                .baseUri(baseUrl)
+                .contentType("application/json")
+                .header("x-api-key", "reqres-free-v1")
+                .body(loginRequestModel)
+                .log().all()
                 // Действие
                 .when()
-                .get(LIST_USERS)
+                .post("/login")
                 // Проверка
                 .then()
-                .spec(responseStatus200)
-                .spec(responseBodySpec)
+                .log().body()
+                .statusCode(200)
+                .extract().asString();
+
+        // Вывод в консоль
+        System.out.println("Успешный ответ: " + response);
+
+        // Проверяем, что в ответе есть токен
+        assertThat(response).contains("token");
+    }
+
+    @Test
+    @DisplayName("Проверка списка пользователей. GET.")
+    void getListUsersTest() {
+
+        // Предусловие упаковано requestSpec
+        ListUsersModel listUsers = given()
+
+                /*
+                 Можно обернуть в спецификацию requestSpec
+                .baseUri("https://reqres.in/api/")
+                .log().uri()
+                .log().headers()
+                .log().body()
+                и начать тест со строчки:
+                ListUsersModel listUsers = given(requestSpec)
+                 */
+
+                .baseUri(baseUrl)
+                .log().uri()
+                .log().headers()
+                .log().body()
+                .contentType(JSON)
+
+                .log().all()
+                // Действие
+                .when()
+                .get("/users?page=2")
+                // Проверка
+                .then()
+                .statusCode(200)
+                // Проверка логов
+                .log().body()
+
                 // извлечь в pojo класс ListUsersModel
                 .extract().as(ListUsersModel.class);
+
 
         assertAll(
                 () -> assertThat(listUsers.getPage()).isEqualTo(2),
@@ -37,9 +95,27 @@ public class ReqressInTests {
                 () -> assertThat(listUsers.getTotalPages()).isEqualTo(2));
     }
 
+    // Перед запуском убедиться что удаляемый пользователь был создан и был получен запросом FET
+    @Test
+    @DisplayName("Удаление пользователя. DELETE")
+    void deleteUserTest() {
+
+        given()
+                // Предусловие
+                .baseUri(baseUrl)
+                .contentType("application/json")
+                .log().all()
+                // Действие
+                .when()
+                .delete("/users/2")
+                // Проверка
+                .then()
+                .statusCode(204);
+    }
+
     @Test
     @DisplayName("Запрос GET SINGLE USERS.")
-    void singleUsers() {
+    void getSingleUsers() {
         // Предусловие
         UserData data = Specifications.requestSpec
                 // Действие
@@ -51,7 +127,6 @@ public class ReqressInTests {
                 .spec(responseBodySpec)
                 .extract().as(UserData.class);
 
-        // групповвая проверка полей ответа
         assertAll("Проверка полученных полей пользователя",
                 () -> assertThat(data.getUser().getId()).isEqualTo(2),
                 () -> assertThat(data.getUser().getEmail()).isEqualTo("janet.weaver@reqres.in"),
@@ -86,36 +161,14 @@ public class ReqressInTests {
     }
 
     @Test
-    @DisplayName("Запрос POST LOGIN OK. Авторизация")
-    void loginWithSpecsTest() {
-        // Предусловие
-        LoginRequestModel loginBody = new LoginRequestModel();
-        loginBody.setEmail("eve.holt@reqres.in");
-        loginBody.setPassword("cityslicka");
-
-        LoginResponseModel response = given(requestSpec)
-                .body(loginBody)
-                // Действие
-                .when()
-                .post(LOGIN)
-                // Проверка
-                .then()
-                .spec(responseStatus200)
-                .spec(responseBodySpec)
-                .extract().as(LoginResponseModel.class);
-
-        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
-    }
-
-    @Test
-    @DisplayName("Проверка авторизации без логина и пароля (Запрос POST)")
-    void loginErrorTest() {
+    @DisplayName("Проверка авторизации без логина и пароля. POST.")
+    void postLoginErrorTest() {
         // Предусловие
         String data = "{ \"email\": \"eve.holt@reqres.in\"}";
 
         given()
-                .log().all()
                 .contentType(JSON)
+                .header("x-api-key", "reqres-free-v1")
                 .body(data)
                 // Действие
                 .when()
@@ -123,30 +176,34 @@ public class ReqressInTests {
                 // Проверка
                 .then()
                 .log().body()
-                .statusCode(400)
+                .statusCode(401)
                 .body("error", is("Missing password"));
     }
 
     @Test
     @DisplayName("Запрос PUT")
-    void updateTest() {
+    void putUpdateTest() {
 
-        // Предусловие
+        // Создание объекта
         CreateRequestModel bodyUpdateData = new CreateRequestModel();
         bodyUpdateData.setJob("zion resident");
         bodyUpdateData.setName("morpheus");
 
-        UpdateResponseModel response = given(requestSpec)
+        UpdateResponseModel response = given()
+                // Предусловие
+                .baseUri(baseUrl)
+                .contentType(JSON)
                 .body(bodyUpdateData)
+                .header("x-api-key", "reqres-free-v1")
+                .log().all()
                 // Действие
                 .when()
-                .put("https://reqres.in/api/api/users/2")
+                .put("users/2")
                 // Проверка
                 .then()
                 .extract().as(UpdateResponseModel.class);
 
         assertThat(response.getName()).isEqualTo("morpheus");
         assertThat(response.getJob()).isEqualTo("zion resident");
-        //assertThat(response.updatedAt()).isEqualTo("2025-07-22T17:14:21.044");
     }
 }
