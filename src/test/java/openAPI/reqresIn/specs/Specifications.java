@@ -9,15 +9,16 @@ import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.http.ContentType.JSON;
 
 public class Specifications {
-    public static ResponseSpecification responseStatus200 = new ResponseSpecBuilder()
+
+    public static ResponseSpecification responseStatus200Spec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .build();
 
-    public static ResponseSpecification responseStatus201 = new ResponseSpecBuilder()
+    public static ResponseSpecification responseStatus201Spes = new ResponseSpecBuilder()
             .expectStatusCode(201)
             .build();
 
-    public static ResponseSpecification responseStatus400 = new ResponseSpecBuilder()
+    public static ResponseSpecification responseStatus400Spec = new ResponseSpecBuilder()
             .expectStatusCode(400)
             .build();
 
