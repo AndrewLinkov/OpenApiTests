@@ -1,29 +1,67 @@
 package openAPI.reqresIn.tests;
 
+import openAPI.reqresIn.model.UserData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static openAPI.reqresIn.tests.BaseTest.BASE_URL;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class DeleteRequestTest {
 
-    // Перед запуском убедиться что удаляемый пользователь был создан
-    // и был получен запросом GET
     @Test
-    @DisplayName("Удаление пользователя. DELETE")
+    @DisplayName("РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРµСЂРµРґ СѓРґР°Р»РµРЅРёРµРј.")
+    void getUserTest() {
+
+        int userId = 3;
+
+        UserData userData = given()
+                // РџСЂРµРґСѓСЃР»РѕРІРёРµ
+                .baseUri(BASE_URL)
+                .header("x-api-key", "reqres-free-v1")
+                .log().all()
+                // Р”РµР№СЃС‚РІРёРµ
+                .when()
+                .get("users/" + userId)
+                // РџСЂРѕРІРµСЂРєР°
+                .then()
+                .statusCode(200)
+                .log().body()
+                .extract().as(UserData.class);
+
+        assertAll(
+                () -> assertThat(userData.getUser().getId()).isEqualTo(2),
+                () -> assertThat(userData.getUser().getEmail()).isEqualTo("janet.weaver@reqres.in"),
+                () -> assertThat(userData.getUser().getFirstName()).isEqualTo("Janet"),
+                () -> assertThat(userData.getUser().getLastName()).isEqualTo("Weaver")
+        );
+    }
+
+    @Test
+    @DisplayName("DELETE - РЈРґР°Р»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")
     void deleteUserTest() {
 
+        int userId = 3;
+
         given()
-                // Предусловие
                 .baseUri(BASE_URL)
+                .header("x-api-key", "reqres-free-v1")
                 .contentType("application/json")
-                .log().all()
-                // Действие
+                .log().body()
                 .when()
-                .delete("users/2")
-                // Проверка
+                .delete("users/" + userId)
                 .then()
-                .statusCode(204);
+                .statusCode(204)
+                .log().all();
+
+        given()
+                .baseUri(BASE_URL)
+                .header("x-api-key", "reqres-free-v1")
+                .when()
+                .get("users/" + userId)
+                .then()
+                .statusCode(200);
     }
 }

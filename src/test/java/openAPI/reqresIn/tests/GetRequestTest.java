@@ -1,11 +1,10 @@
 package openAPI.reqresIn.tests;
 
 import openAPI.reqresIn.model.UserData;
-import openAPI.reqresIn.specs.Specifications;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static openAPI.reqresIn.specs.Specifications.*;
+import static io.restassured.RestAssured.given;
 import static openAPI.reqresIn.tests.BaseTest.BASE_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -13,27 +12,30 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class GetRequestTest {
 
     @Test
-    @DisplayName("Запрос GET SINGLE USERS.")
+    @DisplayName("Р—Р°РїСЂРѕСЃ GET")
     void getSingleUsers() {
 
-        // Предусловие
-        UserData data = Specifications
+        int userId = 2;
 
+        UserData userData = given()
+                // РџСЂРµРґСѓСЃР»РѕРІРёРµ
                 .baseUri(BASE_URL)
-                // Действие
+                .header("x-api-key", "reqres-free-v1")
+                .log().all()
+                // Р”РµР№СЃС‚РІРёРµ
                 .when()
-                .get("")
-                // Проверка
+                .get("users/" + userId)
+                // РџСЂРѕРІРµСЂРєР°
                 .then()
-                .spec(responseStatus200Spec)
-                .spec(responseBodySpec)
+                .statusCode(200)
+                .log().body()
                 .extract().as(UserData.class);
 
-        assertAll("Проверка полученных полей пользователя",
-                () -> assertThat(data.getUser().getId()).isEqualTo(2),
-                () -> assertThat(data.getUser().getEmail()).isEqualTo("janet.weaver@reqres.in"),
-                () -> assertThat(data.getUser().getFirstName()).isEqualTo("Janet"),
-                () -> assertThat(data.getUser().getLastName()).isEqualTo("Weaver")
+        assertAll(
+                () -> assertThat(userData.getUser().getId()).isEqualTo(2),
+                () -> assertThat(userData.getUser().getEmail()).isEqualTo("janet.weaver@reqres.in"),
+                () -> assertThat(userData.getUser().getFirstName()).isEqualTo("Janet"),
+                () -> assertThat(userData.getUser().getLastName()).isEqualTo("Weaver")
         );
     }
 }
